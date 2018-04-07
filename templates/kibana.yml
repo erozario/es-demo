@@ -1,0 +1,19 @@
+# Kibana is served by a back end server. This setting specifies the port to use.
+server.port: "5601"
+
+# This setting specifies the IP address of the back end server.
+server.host: "0.0.0.0"
+
+# The Kibana server's name.  This is used for display purposes.
+server.name: "orwell"
+
+# The URL of the Elasticsearch instance to use for all your queries.
+elasticsearch.url: "http://es1:9200"
+
+# If your Elasticsearch is protected with basic authentication, these settings provide
+# the username and password that the Kibana server uses to perform maintenance on the Kibana
+# index at startup. Your Kibana users still need to authenticate with Elasticsearch, which
+# is proxied through the Kibana server.
+elasticsearch.username: "elastic"
+elasticsearch.password: "changeme"
+xpack.monitoring.ui.container.elasticsearch.enabled: "true"

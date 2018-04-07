@@ -1,0 +1,109 @@
+version: '2'
+services:
+  es1:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.2.3
+    container_name: es1
+    environment:
+      - cluster.name=orwell
+      - node.name=node1
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    mem_limit: 1g
+    cap_add:
+      - IPC_LOCK
+    volumes:
+      - esdata1:/usr/share/elasticsearch/data
+    networks:
+      - esnet
+  
+  es2:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.2.3
+    container_name: es2
+    environment:
+      - cluster.name=orwell
+      - node.name=node2
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "discovery.zen.ping.unicast.hosts=es1"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    mem_limit: 1g
+    cap_add:
+      - IPC_LOCK
+    volumes:
+      - esdata2:/usr/share/elasticsearch/data
+    networks:
+      - esnet
+
+  es3:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.2.3
+    container_name: es3
+    environment:
+      - cluster.name=orwell
+      - node.name=node3
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "discovery.zen.ping.unicast.hosts=es1"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    mem_limit: 1g
+    cap_add:
+      - IPC_LOCK
+    volumes:
+      - esdata3:/usr/share/elasticsearch/data
+    networks:
+      - esnet
+  
+  kibana:
+    image: docker.elastic.co/kibana/kibana:6.2.3
+    container_name: kibana
+    volumes:
+      - ./templates/kibana.yml:/usr/share/kibana/config/kibana.yml
+    networks:
+      - esnet
+  
+  haproxy:
+    image: haproxy:1.6
+    container_name: haproxy
+    hostname: haproxy
+    ports:
+      - 9200:9200
+      - 80:80
+    volumes:
+      - ./templates/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
+    networks:
+      - esnet
+    links:
+      - es1:es1
+      - es2:es2
+      - es3:es3
+      - kibana:kibana
+
+volumes:
+  esdata1:
+    driver: local
+  esdata2:
+    driver: local
+  esdata3:
+    driver: local
+
+networks:
+  esnet:
+    driver: bridge
