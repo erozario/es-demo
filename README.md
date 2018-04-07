@@ -4,16 +4,12 @@ Elasticsearch and Kibana Docker Cluster
 
 ## Requirements
 
-------------------
-
 - [Make](https://www.gnu.org/software/make/)
 - [Docker](https://docs.docker.com/install/)
 - [Docker Compose](https://docs.docker.com/compose/install/)
 - 6GB Of RAM
 
 ## How to test this ?
-
-------------------
 
 Follow this steps
 
