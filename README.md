@@ -18,8 +18,3 @@ Follow this steps
 1. Set elasticsearch.local in hosts with `make hostname`
 1. Verify address `http://elasticsearch.local:9200` for access elasticsearch
 1. Verify address `http://elasticsearch.local` for access Kibana
-
-## Author Information
-
-------------------
-[Linkedin](https://www.linkedin.com/in/eduardo-rozario/)
